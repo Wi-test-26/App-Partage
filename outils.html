@@ -1,0 +1,523 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outils Vibe Coding</title>
+
+<style>
+:root {
+  --blue: #2563eb;
+  --dark: #1e3a5f;
+  --green: #15803d;
+  --bg: #f5f7fb;
+  --text: #263445;
+  --border: #dce4ee;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+header {
+  background: var(--dark);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+header h1 { margin: 0 0 10px; }
+
+main {
+  max-width: 1150px;
+  margin: 35px auto;
+  padding: 0 20px;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+button, input {
+  font: inherit;
+}
+
+.filter {
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  color: var(--dark);
+  cursor: pointer;
+}
+
+.filter:hover, .filter.active {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+
+.search {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 15px;
+  margin: 0 auto 25px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+#count {
+  text-align: center;
+  color: #475569;
+  margin-bottom: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.card h2 {
+  color: var(--blue);
+  font-size: 19px;
+  margin: 0 0 8px;
+}
+
+.category {
+  display: inline-block;
+  background: #e8f5ec;
+  color: var(--green);
+  border-radius: 5px;
+  padding: 4px 9px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.card p { margin: 8px 0; }
+
+.access {
+  font-size: 14px;
+  color: #475569;
+  background: #f8fafc;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.date {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.card a {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.empty {
+  text-align: center;
+  padding: 35px;
+  display: none;
+}
+
+.source {
+  background: #e8f5ec;
+  padding: 22px;
+  border-radius: 10px;
+  margin-top: 35px;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #64748b;
+}
+
+@media(max-width: 600px) {
+  header { padding: 30px 15px; }
+  header h1 { font-size: 25px; }
+  main { padding: 0 14px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Les outils du Vibe Coding</h1>
+  <p>Un catalogue de ressources pour créer avec l'intelligence artificielle.</p>
+</header>
+
+<main>
+
+<section class="intro">
+  <h2>Explorer les ressources</h2>
+  <p>
+    Retrouvez les outils classés par tâche :
+    programmation, création d'applications, contexte,
+    tests et déploiement.
+  </p>
+</section>
+
+<input
+  type="search"
+  id="search"
+  class="search"
+  placeholder="Rechercher un outil..."
+  aria-label="Rechercher un outil"
+>
+
+<div class="controls" aria-label="Filtrer par catégorie">
+  <button class="filter active" data-category="Tous">Tous</button>
+  <button class="filter" data-category="Code">Code</button>
+  <button class="filter" data-category="App & UI">App & UI</button>
+  <button class="filter" data-category="Context & specs">Context & specs</button>
+  <button class="filter" data-category="Test & review">Test & review</button>
+  <button class="filter" data-category="Deploy & run">Deploy & run</button>
+</div>
+
+<p id="count" aria-live="polite"></p>
+
+<section id="tools" class="grid" aria-label="Liste des outils"></section>
+
+<p id="empty" class="empty">
+  Aucun outil ne correspond à votre recherche.
+</p>
+
+<section class="source">
+  <h2>À propos de ce catalogue</h2>
+  <p>
+    Cette sélection est issue du dépôt GitHub
+    awesome-vibecoding. Les informations d'accès,
+    de licence et de disponibilité sont celles
+    indiquées dans le catalogue à leur date de vérification.
+  </p>
+  <a
+    href="https://github.com/Scap-Mehdi/awesome-vibecoding/blob/main/README.fr.md"
+    target="_blank"
+    rel="noopener noreferrer">
+    Consulter le README français
+  </a>
+</section>
+
+</main>
+
+<footer>
+  <p>Projet réalisé dans le cadre d'un exercice GitHub et Cloudflare Pages.</p>
+</footer>
+
+<script>
+const tools = [
+
+  // CODE
+  {
+    name:"Aider", category:"Code",
+    description:"Pair programming en terminal avec des modèles cloud ou locaux et une intégration Git.",
+    access:"Client open source. Coûts d'API ou de modèle local.",
+    date:"18/09/2026", url:"https://aider.chat/"
+  },
+  {
+    name:"Claude Code", category:"Code",
+    description:"Assistant de programmation agentique utilisable dans le terminal et par projet.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://code.claude.com/"
+  },
+  {
+    name:"Cline", category:"Code",
+    description:"Agent de code pour IDE, terminal et desktop.",
+    access:"Client et fournisseur de modèle. Vérifier le prix.",
+    date:"18/09/2026", url:"https://cline.bot/"
+  },
+  {
+    name:"Cursor", category:"Code",
+    description:"Éditeur et agent pour programmer, déboguer et relire du code.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://cursor.com/"
+  },
+  {
+    name:"Gemini CLI", category:"Code",
+    description:"Agent de programmation open source en terminal.",
+    access:"API, Vertex ou entreprise éligible. Accès par abonnement grand public retiré.",
+    date:"18/09/2026", url:"https://github.com/google-gemini/gemini-cli"
+  },
+  {
+    name:"GitHub Copilot", category:"Code",
+    description:"Assistance au code et workflows d'agents dans GitHub et les IDE.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://github.com/features/copilot"
+  },
+  {
+    name:"Goose", category:"Code",
+    description:"Agent local extensible avec workflows de code et intégrations MCP.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://block.github.io/goose/"
+  },
+  {
+    name:"Kiro", category:"Code",
+    description:"Agent de code avec spécifications et tests.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://kiro.dev/"
+  },
+  {
+    name:"OpenAI Codex CLI", category:"Code",
+    description:"Agent de code OpenAI qui fonctionne dans le terminal.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://openai.com/codex/"
+  },
+  {
+    name:"Pi", category:"Code",
+    description:"Agent de code en terminal, extensible et intégrable.",
+    access:"Client MIT. Conditions du modèle et du fournisseur séparées.",
+    date:"18/09/2026", url:"https://github.com/badlogic/pi-mono"
+  },
+
+  // APP & UI
+  {
+    name:"Bolt.new", category:"App & UI",
+    description:"Création d'applications en langage naturel.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://bolt.new/"
+  },
+  {
+    name:"Dyad", category:"App & UI",
+    description:"Création d'applications en local avec des modèles configurables.",
+    access:"Application desktop locale. Coûts du fournisseur de modèle.",
+    date:"18/09/2026", url:"https://dyad.sh/"
+  },
+  {
+    name:"Lovable", category:"App & UI",
+    description:"Génération d'applications full-stack avec Supabase.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://lovable.dev/"
+  },
+  {
+    name:"Onlook", category:"App & UI",
+    description:"Modification visuelle des interfaces tout en travaillant sur le code.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://onlook.com/"
+  },
+  {
+    name:"Replit", category:"App & UI",
+    description:"Création et amélioration d'applications avec Replit Agent.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://replit.com/"
+  },
+  {
+    name:"v0", category:"App & UI",
+    description:"Génération d'interfaces UI et de projets React.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://v0.app/"
+  },
+
+  // CONTEXT & SPECS
+  {
+    name:"Caliber", category:"Context & specs",
+    description:"Génération et synchronisation de configurations pour les agents IA.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://github.com/caliber-ai/caliber"
+  },
+  {
+    name:"Context7", category:"Context & specs",
+    description:"Documentation des bibliothèques comme contexte pour les agents.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://context7.com/"
+  },
+  {
+    name:"Filesystem MCP", category:"Context & specs",
+    description:"Accès contrôlé aux fichiers d'un projet.",
+    access:"Implémentation de référence, sans garantie de production.",
+    date:"18/09/2026", url:"https://github.com/modelcontextprotocol/servers"
+  },
+  {
+    name:"GitHub MCP", category:"Context & specs",
+    description:"Connexion aux dépôts, issues et pull requests.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://github.com/github/github-mcp-server"
+  },
+  {
+    name:"Neon", category:"Context & specs",
+    description:"Connexion des workflows de développement aux bases de données.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://neon.com/"
+  },
+  {
+    name:"Notion MCP", category:"Context & specs",
+    description:"Recherche, lecture et mise à jour du contenu Notion.",
+    access:"MCP officiel hébergé. Vérifier le prix.",
+    date:"18/09/2026", url:"https://developers.notion.com/"
+  },
+  {
+    name:"OpenSpec", category:"Context & specs",
+    description:"Développement piloté par les spécifications pour les assistants IA.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://openspec.dev/"
+  },
+  {
+    name:"Supabase MCP", category:"Context & specs",
+    description:"Gestion des schémas, requêtes et configurations Supabase.",
+    access:"MCP officiel. Vérifier le prix.",
+    date:"18/09/2026", url:"https://supabase.com/docs/guides/getting-started/mcp"
+  },
+
+  // TEST & REVIEW
+  {
+    name:"Agent QA", category:"Test & review",
+    description:"Création et exécution de tests web et mobiles en langage naturel.",
+    access:"FSL-1.1-ALv2. Source disponible avec restriction d'usage concurrent. Coûts de modèle.",
+    date:"18/09/2026", url:"https://github.com/agent-qa/agent-qa"
+  },
+  {
+    name:"Playwright MCP", category:"Test & review",
+    description:"Automatisation du navigateur et tests des pages web.",
+    access:"Client Apache-2.0. Conditions du modèle séparées.",
+    date:"18/09/2026", url:"https://github.com/microsoft/playwright-mcp"
+  },
+  {
+    name:"PR-Agent", category:"Test & review",
+    description:"Relecture automatisée des pull requests.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://github.com/qodo-ai/pr-agent"
+  },
+  {
+    name:"Prbl", category:"Test & review",
+    description:"Scanner de sécurité pour détecter les failles fréquentes du code généré par IA.",
+    access:"Scan et GitHub Action gratuits. Correcteur et dépôts privés payants. Python, JS et TS.",
+    date:"23/09/2026", url:"https://getprbl.com/"
+  },
+  {
+    name:"Qodo", category:"Test & review",
+    description:"Revue de code assistée par intelligence artificielle.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://www.qodo.ai/"
+  },
+  {
+    name:"Semgrep MCP", category:"Test & review",
+    description:"Analyse de sécurité du code via Semgrep.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://semgrep.dev/"
+  },
+  {
+    name:"Sentry", category:"Test & review",
+    description:"Inspection des erreurs applicatives et diagnostic des problèmes.",
+    access:"Functional Source License. Vérifier les conditions de l'offre hébergée.",
+    date:"18/09/2026", url:"https://sentry.io/"
+  },
+
+  // DEPLOY & RUN
+  {
+    name:"Cloudflare", category:"Deploy & run",
+    description:"Gestion des déploiements d'applications et des ressources cloud.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://www.cloudflare.com/"
+  },
+  {
+    name:"E2B", category:"Deploy & run",
+    description:"Environnements sandbox cloud pour les agents IA.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://e2b.dev/"
+  },
+  {
+    name:"Publish.my", category:"Deploy & run",
+    description:"Publication de sites statiques pilotée par agents.",
+    access:"Offre gratuite. Sites statiques uniquement. Activation par email.",
+    date:"18/09/2026", url:"https://publish.my/"
+  },
+  {
+    name:"XcodeBuildMCP", category:"Deploy & run",
+    description:"Compilation, exécution et débogage de projets Apple.",
+    access:"Vérifier le prix.",
+    date:"18/09/2026", url:"https://github.com/obdev/XcodeBuildMCP"
+  }
+];
+
+let selectedCategory = "Tous";
+
+const container = document.getElementById("tools");
+const search = document.getElementById("search");
+const count = document.getElementById("count");
+const empty = document.getElementById("empty");
+
+function renderTools() {
+  const term = search.value.toLowerCase();
+
+  const filtered = tools.filter(tool => {
+    const matchesCategory =
+      selectedCategory === "Tous" ||
+      tool.category === selectedCategory;
+
+    const matchesSearch =
+      (tool.name + " " + tool.description + " " +
+      tool.access + " " + tool.category)
+      .toLowerCase().includes(term);
+
+    return matchesCategory && matchesSearch;
+  });
+
+  container.innerHTML = filtered.map(tool => `
+    <article class="card">
+      <span class="category">${tool.category}</span>
+      <h2>
+        <a href="${tool.url}" target="_blank"
+           rel="noopener noreferrer">${tool.name}</a>
+      </h2>
+      <p>${tool.description}</p>
+      <p class="access">
+        <strong>Access / scope :</strong><br>
+        ${tool.access}
+      </p>
+      <p class="date">
+        Vérifié le : ${tool.date}
+      </p>
+    </article>
+  `).join("");
+
+  count.textContent =
+    filtered.length + " outil(s) affiché(s)";
+
+  empty.style.display =
+    filtered.length === 0 ? "block" : "none";
+}
+
+document.querySelectorAll(".filter").forEach(button => {
+  button.addEventListener("click", () => {
+    selectedCategory = button.dataset.category;
+
+    document.querySelectorAll(".filter")
+      .forEach(b => b.classList.remove("active"));
+
+    button.classList.add("active");
+    renderTools();
+  });
+});
+
+search.addEventListener("input", renderTools);
+
+renderTools();
+</script>
+
+</body>
+</html>
